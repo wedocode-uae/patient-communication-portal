@@ -255,4 +255,130 @@
           <input type="datetime-local" name="appt1" />
         </div>
         <div class="col-4">
-          <label>Second Appointment — Date & Time
+          <label>Second Appointment — Date & Time (الموعد الثاني)</label>
+          <input type="datetime-local" name="appt2" />
+        </div>
+        <div class="col-4">
+          <label>Add New Appointment (إضافة موعد جديد)</label>
+          <input type="datetime-local" name="apptNew" />
+        </div>
+        <div class="col-4">
+          <label>Assign Department (تعيين القسم)</label>
+          <select name="apptDepartment">
+            <option value="">Select…</option>
+            <option>Physiotherapy</option><option>ENT</option><option>Gynecology</option>
+            <option>Orthopedics</option><option>Neurology</option><option>General Surgery</option>
+          </select>
+        </div>
+        <div class="col-4">
+          <label>Assign Doctor (تعيين الطبيب)</label>
+          <select name="apptDoctor">
+            <option value="">Select…</option>
+            <option>Dr. Abrar Muhamed</option><option>Dr. Idrees Adam</option>
+            <option>Dr. Amira Elshamsi</option><option>Dr. George Philips</option>
+            <option>Dr. Sara Nabil</option><option>Dr. Ahmed Al Marri</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Attendance / Absence -->
+    <section class="section" aria-labelledby="sec-absence">
+      <h2 id="sec-absence">Attendance / Absence <span class="badge">الحضور / الغياب</span></h2>
+      <div class="grid">
+        <div class="col-12">
+          <label class="inline">
+            <input type="checkbox" name="absent" />
+            <span>&nbsp;Mark as Absent (وضع علامة غياب)</span>
+          </label>
+        </div>
+        <div class="col-12">
+          <label>Reason for Absence (سبب الغياب)</label>
+          <textarea name="absenceReason" placeholder="Enter reason if the patient missed the scheduled appointment"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: Staff Entry Details -->
+    <section class="section" aria-labelledby="sec-staff">
+      <h2 id="sec-staff">Staff Entry Details <span class="badge">بيانات الموظف</span></h2>
+      <div class="grid">
+        <div class="col-6">
+          <label>Staff Name (اسم الموظف)</label>
+          <input type="text" name="staffName" placeholder="Enter staff name" required />
+        </div>
+        <div class="col-6">
+          <label>Staff Mobile Number (رقم جوال الموظف)</label>
+          <input type="text" name="staffMobile" placeholder="+9715XXXXXXXX" inputmode="tel" required />
+        </div>
+      </div>
+    </section>
+  </form>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="successBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-icon">✅</div>
+        <div class="modal-title" id="modalTitle">Appointment Saved Successfully</div>
+      </div>
+      <div class="modal-body" id="modalBody">
+        The patient appointment has been saved. You can now print or send notifications via WhatsApp/Email.
+      </div>
+      <div class="modal-actions">
+        <button class="btn-modal" id="modalClose">Close</button>
+        <button class="btn-modal btn-ok" id="modalOk">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="bottom-bar" role="region" aria-label="Form Actions">
+    <div class="bar-inner">
+      <button type="submit" class="btn btn-primary" form="patientForm">
+        Save Appointment <span class="tick">✔</span>
+      </button>
+      <button type="button" class="btn btn-ghost" onclick="sendWhatsApp()">WhatsApp</button>
+      <button type="button" class="btn btn-ghost" onclick="sendEmail()">Send Email</button>
+      <button type="button" class="btn btn-ghost" onclick="printForm()">Print</button>
+      <button type="button" class="btn btn-ghost" onclick="resetForm()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('patientForm');
+    const modal = document.getElementById('successBackdrop');
+    const closeModal = document.getElementById('modalClose');
+    const okModal = document.getElementById('modalOk');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+    });
+
+    closeModal.addEventListener('click', () => modal.style.display='none');
+    okModal.addEventListener('click', () => modal.style.display='none');
+
+    function sendWhatsApp(){
+      const name = form.fullName.value || "Patient";
+      alert(`WhatsApp message would be sent to ${name}`);
+    }
+
+    function sendEmail(){
+      const email = form.email.value || "";
+      if(!email){ alert("Email not provided."); return; }
+      alert(`Email would be sent to ${email}`);
+    }
+
+    function printForm(){
+      window.print();
+    }
+
+    function resetForm(){
+      if(confirm("Are you sure you want to cancel and reset the form?")){
+        form.reset();
+      }
+    }
+  </script>
+</body>
+</html>
