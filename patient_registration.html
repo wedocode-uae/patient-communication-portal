@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
-      --brand:#B49A47;       /* Gold accent from your logo */
+      --brand:#B49A47;  /* Gold accent from your logo */
       --ink:#1d1f24;
       --muted:#667085;
       --line:#e6e7eb;
@@ -38,23 +38,31 @@
     .spacer{flex:1}
     .logo{height:36px; width:auto; object-fit:contain}
 
-    /* Page container */
-    .container{max-width:1100px; margin:24px auto 120px; padding:0 16px}
+    /* Page container: margin-bottom extended for toolbar */
+    .container{
+      max-width:1100px;
+      margin:24px auto 260px; /* <<< increased space for the docked toolbar */
+      padding:0 16px;
+    }
 
-    /* Section block: full-width with divider top */
     .section{padding:20px 0;border-top:1px solid var(--line)}
     .section:first-of-type{border-top:0}
     .section h2{margin:0 0 14px 0;font-size:16px;font-weight:700}
-    .badge{display:inline-block;background:rgba(180,154,71,.12);color:var(--brand);padding:4px 8px;border-radius:999px;font-size:12px;font-weight:600;vertical-align:middle}
+    .badge{
+      display:inline-block; background:rgba(180,154,71,.12);
+      color:var(--brand); padding:4px 8px;
+      border-radius:999px; font-size:12px; font-weight:600;
+    }
 
     /* Grid */
     .grid{display:grid;gap:14px;grid-template-columns:repeat(12,1fr)}
     .col-12{grid-column:span 12}.col-8{grid-column:span 8}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}
     @media (max-width: 960px){.col-8,.col-6,.col-4,.col-3{grid-column:span 12}}
 
-    label{display:block;margin:0 0 6px 0;font-weight:600;font-size:13px}
+    label{display:block;margin:0 0 6px;font-weight:600;font-size:13px}
     input[type="text"],input[type="email"],input[type="number"],input[type="date"],input[type="datetime-local"],select,textarea{
-      width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s
+      width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:14px;
+      outline:none;transition:border-color .2s,box-shadow .2s
     }
     input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(180,154,71,.14)}
     textarea{min-height:96px;resize:vertical}
@@ -62,30 +70,42 @@
     .note{font-size:12px;color:var(--muted)}
     .inline{display:flex;gap:8px;align-items:center}
 
-    /* Bottom button bar (Layout B) */
+    /*  B2 STYLE — DOCKED GLASS TOOLBAR  */
     .bottom-bar{
-      position:fixed; left:0; right:0; bottom:0; z-index:20;
-      background:#fff; border-top:1px solid var(--line);
+      position:fixed; 
+      left:0; right:0; bottom:0;
+      z-index:30;
+      background:rgba(255,255,255,0.78);
+      backdrop-filter:blur(14px) saturate(180%);
+      border-top:1px solid rgba(180,154,71,0.25);
+      padding:10px 0;
     }
     .bar-inner{
-      max-width:1100px; margin:0 auto; padding:12px 16px;
+      max-width:900px;
+      margin:0 auto;
       display:flex; align-items:center; gap:10px;
+      justify-content:center;
     }
+
     .btn{
-      border:none; border-radius:10px; padding:14px 16px; font-weight:700; cursor:pointer; font-size:14px;
+      border:none; border-radius:50px; 
+      padding:14px 22px; 
+      font-weight:700; cursor:pointer;
+      font-size:14px;
     }
     .btn-primary{
-      flex:1;
-      background:var(--brand); color:#fff; text-transform:uppercase; letter-spacing:.4px;
+      background:var(--brand); color:#fff;
+      text-transform:uppercase; letter-spacing:.4px;
     }
-    .btn-primary:hover{opacity:.95}
     .btn-ghost{
-      background:#fff; color:var(--ink); border:1px solid var(--line); min-width:140px;
+      background:rgba(255,255,255,0.6);
+      border:1px solid rgba(255,255,255,0.35);
+      color:var(--ink);
     }
-    .btn-ghost:hover{border-color:#d6d7dc}
-    .tick{ margin-left:8px; color:var(--success); font-weight:900; }
+    .btn-ghost:hover{background:rgba(255,255,255,0.8)}
+    .tick{ margin-left:6px; color:var(--success); font-weight:900; }
 
-    /* Premium Modal (glass + gold accent) */
+    /* Premium Modal (glass)  */
     .modal-backdrop{
       position:fixed; inset:0; background:rgba(0,0,0,.28);
       display:none; align-items:center; justify-content:center; z-index:50;
@@ -96,497 +116,17 @@
       border:1px solid rgba(180,154,71,.35);
       border-radius:16px;
       backdrop-filter: blur(10px);
-      box-shadow:0 20px 60px rgba(0,0,0,.25);
       overflow:hidden;
     }
-    .modal-header{
-      display:flex; align-items:center; gap:10px;
-      padding:18px 20px; border-bottom:1px solid rgba(180,154,71,.25);
-      background:linear-gradient(180deg, rgba(180,154,71,.10), rgba(255,255,255,0));
-    }
+    .modal-header{padding:18px 20px;display:flex;gap:10px;border-bottom:1px solid rgba(180,154,71,.25)}
     .modal-icon{
-      width:36px; height:36px; border-radius:10px; display:grid; place-items:center;
-      background:rgba(180,154,71,.14); color:var(--brand); font-size:20px; font-weight:900;
+      width:36px; height:36px; border-radius:10px;
+      display:grid;place-items:center;
+      background:rgba(180,154,71,.14);
+      color:var(--brand);font-size:20px;font-weight:900
     }
-    .modal-title{font-size:16px; font-weight:800}
-    .modal-body{padding:16px 20px; color:#2a2f34}
-    .modal-actions{padding:14px 20px; display:flex; justify-content:flex-end; gap:10px; border-top:1px solid rgba(180,154,71,.18)}
-    .btn-modal{padding:10px 14px; border-radius:10px; border:1px solid var(--line); background:#fff; cursor:pointer; font-weight:700}
-    .btn-ok{background:var(--brand); color:#fff; border:none}
+    .modal-actions{padding:14px 20px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid rgba(180,154,71,.18)}
+    .btn-modal{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:700}
+    .btn-ok{background:var(--brand);color:#fff;border:none}
   </style>
 </head>
-<body>
-
-  <!-- Header -->
-  <header class="header" role="banner">
-    <div>
-      <div class="title">Patient Registration & Appointment Management</div>
-      <div class="subtitle">Patient Communication Portal</div>
-    </div>
-    <div class="spacer"></div>
-    <!-- Small logo top-right -->
-    <img class="logo" src="images/logo.jpg" alt="Hospital Logo">
-  </header>
-
-  <form class="container" id="patientForm" autocomplete="off">
-    <!-- SECTION 1: Patient Information -->
-    <section class="section" aria-labelledby="sec-patient">
-      <h2 id="sec-patient">Patient Information <span class="badge">هوية المريض</span></h2>
-      <div class="grid">
-        <!-- Patient Full Name FIRST -->
-        <div class="col-4">
-          <label>Patient Full Name (اسم المريض)</label>
-          <input type="text" name="fullName" placeholder="As per EID/Passport" required />
-        </div>
-
-        <div class="col-4">
-          <label>Emirates ID (الهوية الإماراتية)</label>
-          <input type="text" name="eid" placeholder="784-XXXX-XXXXXXX-X" inputmode="numeric" />
-        </div>
-        <div class="col-4">
-          <label>Passport Number (رقم الجواز)</label>
-          <input type="text" name="passport" placeholder="P1234567" />
-        </div>
-
-        <div class="col-3">
-          <label>Date of Birth (تاريخ الميلاد)</label>
-          <input type="date" name="dob" required />
-        </div>
-        <div class="col-3">
-          <label>Gender (الجنس)</label>
-          <select name="gender" required>
-            <option value="">Select…</option><option>Male</option><option>Female</option>
-          </select>
-        </div>
-        <div class="col-3">
-          <label>Nationality (الجنسية)</label>
-          <select name="nationality" required>
-            <option value="">Select…</option>
-            <option>United Arab Emirates</option><option>India</option><option>Pakistan</option><option>Egypt</option><option>Philippines</option><option>Bangladesh</option><option>Nepal</option><option>Sri Lanka</option><option>Jordan</option><option>Sudan</option>
-          </select>
-        </div>
-        <div class="col-3">
-          <label>Emirate (الإمارة)</label>
-          <select name="emirate" required>
-            <option value="">Select…</option>
-            <option>Abu Dhabi</option><option>Dubai</option><option>Sharjah</option><option>Ajman</option><option>Umm Al Quwain</option><option>Ras Al Khaimah</option><option>Fujairah</option>
-          </select>
-        </div>
-
-        <div class="col-6">
-          <label>Email Address (البريد الإلكتروني)</label>
-          <input type="email" name="email" placeholder="name@example.com" />
-        </div>
-        <div class="col-6">
-          <label>Location / Area (المنطقة)</label>
-          <input type="text" name="location" placeholder="e.g., Khalifa City A, Abu Dhabi" />
-        </div>
-
-        <div class="col-3">
-          <label>Primary Mobile Number (رقم الجوال الأساسي)</label>
-          <input type="text" name="mobilePrimary" placeholder="+9715XXXXXXXX" inputmode="tel" required />
-        </div>
-        <div class="col-3">
-          <label>Secondary Mobile Number (رقم الجوال البديل)</label>
-          <input type="text" name="mobileSecondary" placeholder="+9715XXXXXXXX" inputmode="tel" />
-        </div>
-        <div class="col-3">
-          <label>Preferred Contact (رقم التواصل المفضل)</label>
-          <select name="preferredContact"><option>Primary</option><option>Secondary</option></select>
-        </div>
-        <div class="col-3">
-          <label>Preferred WhatsApp Number (رقم واتساب المفضل)</label>
-          <input type="text" name="whatsapp" placeholder="+9715XXXXXXXX" inputmode="tel" />
-          <div class="note">Used for WhatsApp notifications.</div>
-        </div>
-
-        <div class="col-6">
-          <label>Emergency Contact Number (رقم الطوارئ)</label>
-          <input type="text" name="emergency" placeholder="+9715XXXXXXXX" inputmode="tel" />
-        </div>
-        <div class="col-6">
-          <label>Patient Photo (صورة المريض)</label>
-          <div class="file">
-            <input type="file" name="photo" accept="image/*" />
-            <div class="note">Upload clear face photo (JPG/PNG). (Not printed on slip)</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 2: Medical Visit Details -->
-    <section class="section" aria-labelledby="sec-visit">
-      <h2 id="sec-visit">Medical Visit Details <span class="badge">تفاصيل الزيارة</span></h2>
-      <div class="grid">
-        <div class="col-4">
-          <label>Department (القسم)</label>
-          <select name="department" required>
-            <option value="">Select…</option>
-            <option>Physiotherapy</option><option>ENT</option><option>Gynecology</option><option>Orthopedics</option><option>Neurology</option><option>General Surgery</option>
-          </select>
-        </div>
-        <div class="col-4">
-          <label>Doctor (الطبيب)</label>
-          <select name="doctor" required>
-            <option value="">Select…</option>
-            <option>Dr. Abrar Muhamed</option>
-            <option>Dr. Idrees Adam</option>
-            <option>Dr. Amira Elshamsi</option>
-            <option>Dr. George Philips</option>
-            <option>Dr. Sara Nabil</option>
-            <option>Dr. Ahmed Al Marri</option>
-          </select>
-        </div>
-        <div class="col-4">
-          <label>Visit Reason (سبب الزيارة)</label>
-          <select name="visitReason" required>
-            <option value="">Select…</option>
-            <option>Musculoskeletal pain</option>
-            <option>Post-operative rehabilitation</option>
-            <option>Respiratory assessment</option>
-            <option>Neurological evaluation</option>
-            <option>ENT assessment</option>
-            <option>Antenatal care (OB/GYN)</option>
-            <option>Chronic disease follow-up</option>
-            <option>Injury/trauma assessment</option>
-            <option>Pre-surgical evaluation</option>
-          </select>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 3: Appointments -->
-    <section class="section" aria-labelledby="sec-appts">
-      <h2 id="sec-appts">Appointments <span class="badge">المواعيد</span></h2>
-      <div class="grid">
-        <div class="col-4">
-          <label>First Appointment — Date & Time (الموعد الأول)</label>
-          <input type="datetime-local" name="appt1" />
-        </div>
-        <div class="col-4">
-          <label>Second Appointment — Date & Time (الموعد الثاني)</label>
-          <input type="datetime-local" name="appt2" />
-        </div>
-        <div class="col-4">
-          <label>Add New Appointment (إضافة موعد جديد)</label>
-          <input type="datetime-local" name="apptNew" />
-        </div>
-
-        <div class="col-4">
-          <label>Assign Department (تعيين القسم)</label>
-          <select name="apptDepartment">
-            <option value="">Select…</option>
-            <option>Physiotherapy</option><option>ENT</option><option>Gynecology</option><option>Orthopedics</option><option>Neurology</option><option>General Surgery</option>
-          </select>
-        </div>
-        <div class="col-4">
-          <label>Assign Doctor (تعيين الطبيب)</label>
-          <select name="apptDoctor">
-            <option value="">Select…</option>
-            <option>Dr. Abrar Muhamed</option>
-            <option>Dr. Idrees Adam</option>
-            <option>Dr. Amira Elshamsi</option>
-            <option>Dr. George Philips</option>
-            <option>Dr. Sara Nabil</option>
-            <option>Dr. Ahmed Al Marri</option>
-          </select>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 4: Attendance / Absence -->
-    <section class="section" aria-labelledby="sec-absence">
-      <h2 id="sec-absence">Attendance / Absence <span class="badge">الحضور / الغياب</span></h2>
-      <div class="grid">
-        <div class="col-12">
-          <label class="inline">
-            <input type="checkbox" name="absent" />
-            <span>&nbsp;Mark as Absent (وضع علامة غياب)</span>
-          </label>
-        </div>
-        <div class="col-12">
-          <label>Reason for Absence (سبب الغياب)</label>
-          <textarea name="absenceReason" placeholder="Enter reason if the patient missed the scheduled appointment"></textarea>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 5: Staff Entry Details -->
-    <section class="section" aria-labelledby="sec-staff">
-      <h2 id="sec-staff">Staff Entry Details <span class="badge">بيانات الموظف</span></h2>
-      <div class="grid">
-        <div class="col-6">
-          <label>Staff Name (اسم الموظف)</label>
-          <input type="text" name="staffName" placeholder="Enter staff name" required />
-        </div>
-        <div class="col-6">
-          <label>Staff Mobile Number (رقم جوال الموظف)</label>
-          <input type="text" name="staffMobile" placeholder="+9715XXXXXXXX" inputmode="tel" required />
-        </div>
-      </div>
-    </section>
-  </form>
-
-  <!-- Premium Success Modal -->
-  <div class="modal-backdrop" id="successBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-icon">✅</div>
-        <div class="modal-title" id="modalTitle">Appointment Saved Successfully</div>
-      </div>
-      <div class="modal-body" id="modalBody">
-        The patient appointment has been saved. You can now print or send notifications via WhatsApp/Email.
-      </div>
-      <div class="modal-actions">
-        <button class="btn-modal" id="modalClose">Close</button>
-        <button class="btn-modal btn-ok" id="modalOk">OK</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom Action Bar -->
-  <div class="bottom-bar">
-    <div class="bar-inner">
-      <button type="button" class="btn btn-primary" id="btnSave">Save Appointment</button>
-
-      <button type="button" class="btn btn-ghost" id="btnPrint">Print</button>
-
-      <button type="button" class="btn btn-ghost" id="btnWhatsApp">
-        Send Whatsapp <span class="tick" id="tickWA" style="display:none;">✅</span>
-      </button>
-
-      <button type="button" class="btn btn-ghost" id="btnEmail">
-        Send Email <span class="tick" id="tickEmail" style="display:none;">✅</span>
-      </button>
-    </div>
-  </div>
-
-  <script>
-    /* ================================
-       Helpers and State
-    ==================================*/
-    const TICKS_KEY = 'appointment_ticks_status'; // { whatsapp: true/false, email: true/false }
-
-    function getTicks(){
-      try{ return JSON.parse(localStorage.getItem(TICKS_KEY)) || {whatsapp:false,email:false}; }
-      catch(e){ return {whatsapp:false,email:false}; }
-    }
-    function setTicks(data){
-      localStorage.setItem(TICKS_KEY, JSON.stringify(data));
-    }
-    function renderTicks(){
-      const {whatsapp,email} = getTicks();
-      document.getElementById('tickWA').style.display = whatsapp ? 'inline' : 'none';
-      document.getElementById('tickEmail').style.display = email ? 'inline' : 'none';
-    }
-    renderTicks(); // restore on load
-
-    // Light guard example for SAVE
-    function validateBeforeSave(){
-      const f = document.getElementById('patientForm');
-      const name = (f.fullName.value || '').trim();
-      const dept = (f.department.value || '').trim();
-      if(!name || !dept){
-        alert('Please enter Patient Full Name and Department before saving.');
-        return false;
-      }
-      return true;
-    }
-
-    /* ================================
-       Premium Success Modal (glass)
-    ==================================*/
-    const successBackdrop = document.getElementById('successBackdrop');
-    document.getElementById('btnSave').addEventListener('click', () => {
-      if(!validateBeforeSave()) return;
-      successBackdrop.style.display = 'flex';
-      // Add API/DB save here later if needed
-    });
-    document.getElementById('modalClose').addEventListener('click', ()=> successBackdrop.style.display='none');
-    document.getElementById('modalOk').addEventListener('click',   ()=> successBackdrop.style.display='none');
-
-    /* ================================
-       PRINT → New Tab Preview with Slip
-    ==================================*/
-    function formatDT(v) {
-      if (!v) return '';
-      const d = new Date(v);
-      if (isNaN(d.getTime())) return v;
-      return d.toLocaleString('en-GB', {
-        weekday: 'short', day: '2-digit', month: 'short', year: 'numeric',
-        hour: 'numeric', minute: '2-digit', hour12: true
-      }).replace(',', '');
-    }
-
-    function buildAppointmentSlipHTML(formValues, ticks) {
-      const {
-        fullName, eid, department, doctor,
-        appt1, appt2, apptNew
-      } = formValues;
-
-      const firstDT  = formatDT(appt1);
-      const secondDT = formatDT(appt2);
-      const newDT    = formatDT(apptNew);
-      const upcoming = newDT || firstDT || secondDT || '—';
-
-      // QR to revitalrehab.ae (PNG via quick generator service)
-      const qrURL = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=0&data=' + encodeURIComponent('https://revitalrehab.ae');
-
-      const waBadge    = ticks.whatsapp ? 'Sent ✅' : 'Pending';
-      const emailBadge = ticks.email    ? 'Sent ✅' : 'Pending';
-
-      // Try to use absolute logo path when served; fallback to relative when file://
-      const base = (window.location.origin && window.location.origin !== 'null') ? window.location.origin + '/' : '';
-      const logoSrc = base ? (base + 'images/logo.jpg') : 'images/logo.jpg';
-
-      return `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<title>Appointment Slip - Revital Rehabilitation Hospital</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  @page { size: A4; margin: 18mm; }
-  body{ font-family: "Segoe UI", Roboto, Arial, sans-serif; color:#1d1f24; background:#fff; }
-  .wrap{ max-width: 780px; margin:0 auto; }
-  .header{ text-align:center; margin-bottom:18px; }
-  .logo{ height:60px; object-fit:contain; }
-  .hname{ font-size:20px; font-weight:800; margin-top:8px; }
-  .title{ font-size:18px; font-weight:800; margin:16px 0 12px; letter-spacing:.5px; }
-  .line{ border-top:1px solid #e6e7eb; margin:12px 0 18px; }
-  .grid{ display:flex; gap:18px; align-items:flex-start; }
-  .left{ flex:1; }
-  .right{ width:180px; text-align:center; }
-  .kv{ display:grid; grid-template-columns: 180px 1fr; row-gap:8px; column-gap:12px; }
-  .kv div{ padding:4px 0; font-size:14px; }
-  .k{ color:#667085; }
-  .v{ font-weight:600; }
-  .sectionTitle{ font-weight:800; margin:14px 0 8px; }
-  .badge{ display:inline-block; font-size:12px; padding:3px 8px; border-radius:999px; background:rgba(180,154,71,.12); color:#B49A47; font-weight:700; }
-  .qr{ border:1px solid #eee; padding:6px; border-radius:8px; margin-top:6px; }
-  .footer{ margin-top:20px; padding-top:12px; border-top:1px solid #e6e7eb; font-size:13px; color:#475467; text-align:center; line-height:1.5; }
-  .actions{ margin-top:20px; text-align:center; }
-  .printBtn{ padding:10px 16px; border:0; background:#B49A47; color:#fff; font-weight:800; border-radius:10px; cursor:pointer; }
-  @media print { .actions{ display:none } }
-</style>
-</head>
-<body>
-  <div class="wrap">
-    <div class="header">
-      <img class="logo" src="${logoSrc}" alt="Hospital Logo" />
-      <div class="hname">Revital Rehabilitation Hospital</div>
-      <div class="title">APPOINTMENT SLIP</div>
-    </div>
-
-    <div class="line"></div>
-
-    <div class="grid">
-      <div class="left">
-        <div class="sectionTitle">Patient Details <span class="badge">هوية المريض</span></div>
-        <div class="kv">
-          <div class="k">Patient Name</div>  <div class="v">${fullName || '—'}</div>
-          <div class="k">Emirates ID</div>   <div class="v">${eid || '—'}</div>
-        </div>
-
-        <div class="sectionTitle" style="margin-top:14px;">Appointment <span class="badge">الموعد</span></div>
-        <div class="kv">
-          <div class="k">Department</div>          <div class="v">${department || '—'}</div>
-          <div class="k">Doctor</div>              <div class="v">${doctor || '—'}</div>
-          <div class="k">Upcoming</div>            <div class="v">${upcoming}</div>
-          <div class="k">First Appointment</div>   <div class="v">${firstDT || '—'}</div>
-          <div class="k">Second Appointment</div>  <div class="v">${secondDT || '—'}</div>
-          <div class="k">Added (New)</div>         <div class="v">${newDT || '—'}</div>
-        </div>
-
-        <div class="sectionTitle" style="margin-top:14px;">Notifications <span class="badge">الإشعارات</span></div>
-        <div class="kv">
-          <div class="k">WhatsApp</div> <div class="v">${waBadge}</div>
-          <div class="k">Email</div>    <div class="v">${emailBadge}</div>
-        </div>
-      </div>
-
-      <div class="right">
-        <div class="sectionTitle">Scan for Website</div>
-        <img class="qr" src="${qrURL}" width="160" height="160" alt="QR to website" />
-        <div style="font-size:12px;color:#667085;margin-top:6px;">revitalrehab.ae</div>
-      </div>
-    </div>
-
-    <div class="footer">
-      info@revitalrehab.ae • +9 713 7144 444<br/>
-      Al Tawwash Street, Al Foah - Al Ain, Abudhabi
-    </div>
-
-    <div class="actions">
-      <button class="printBtn" onclick="window.print()">Print</button>
-    </div>
-  </div>
-</body>
-</html>`;
-    }
-
-    // PRINT handler → open new tab preview
-    document.getElementById('btnPrint').addEventListener('click', () => {
-      const f = document.getElementById('patientForm');
-      const get = (name) => (f.elements[name] ? f.elements[name].value : '');
-
-      const formValues = {
-        fullName: get('fullName'),
-        eid: get('eid'),
-        department: get('department'),
-        doctor: get('doctor'),
-        appt1: get('appt1'),
-        appt2: get('appt2'),
-        apptNew: get('apptNew')
-      };
-
-      let ticks = { whatsapp:false, email:false };
-      try {
-        ticks = JSON.parse(localStorage.getItem('appointment_ticks_status')) || ticks;
-      } catch(e){ /* ignore */ }
-
-      const html = buildAppointmentSlipHTML(formValues, ticks);
-      const w = window.open('', '_blank');
-      if (w) {
-        w.document.open();
-        w.document.write(html);
-        w.document.close();
-        w.focus();
-      } else {
-        alert('Popup blocked. Please allow popups for this site to preview the slip.');
-      }
-    });
-
-    /* ================================
-       SEND WhatsApp / Email → persist ticks
-    ==================================*/
-    document.getElementById('btnWhatsApp').addEventListener('click', () => {
-      const ticks = getTicks();
-      ticks.whatsapp = true;
-      setTicks(ticks);
-      renderTicks();
-
-      // TODO: integrate WhatsApp API call here
-      // Example:
-      // fetch('/api/whatsapp/send', {
-      //   method:'POST', headers:{'Content-Type':'application/json'},
-      //   body: JSON.stringify({ to: document.querySelector('[name="whatsapp"]').value, ...payload })
-      // })
-    });
-
-    document.getElementById('btnEmail').addEventListener('click', () => {
-      const ticks = getTicks();
-      ticks.email = true;
-      setTicks(ticks);
-      renderTicks();
-
-      // TODO: integrate Email API call here
-      // Example:
-      // fetch('/api/email/send', {
-      //   method:'POST', headers:{'Content-Type':'application/json'},
-      //   body: JSON.stringify({ to: document.querySelector('[name="email"]').value, ...payload })
-      // })
-    });
-  </script>
-</body>
-</html>
