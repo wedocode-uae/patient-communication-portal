@@ -39,7 +39,11 @@
     .logo{height:36px; width:auto; object-fit:contain}
 
     /* Page container */
-    .container{max-width:1100px; margin:24px auto 120px; padding:0 16px}
+    .container{
+      max-width:1100px;
+      margin:24px auto 0;
+      padding:0 16px 140px; /* 👈 added extra bottom padding to avoid overlap */
+    }
 
     /* Section block: full-width with divider top */
     .section{padding:20px 0;border-top:1px solid var(--line)}
@@ -65,7 +69,9 @@
     /* Bottom button bar (Layout B) */
     .bottom-bar{
       position:fixed; left:0; right:0; bottom:0; z-index:20;
-      background:#fff; border-top:1px solid var(--line);
+      background: rgba(255,255,255,0.85); /* 👈 semi-transparent */
+      border-top:1px solid var(--line);
+      backdrop-filter: blur(8px); /* 👈 glass blur effect */
     }
     .bar-inner{
       max-width:1100px; margin:0 auto; padding:12px 16px;
@@ -133,12 +139,10 @@
     <section class="section" aria-labelledby="sec-patient">
       <h2 id="sec-patient">Patient Information <span class="badge">هوية المريض</span></h2>
       <div class="grid">
-        <!-- Patient Full Name FIRST -->
         <div class="col-4">
           <label>Patient Full Name (اسم المريض)</label>
           <input type="text" name="fullName" placeholder="As per EID/Passport" required />
         </div>
-
         <div class="col-4">
           <label>Emirates ID (الهوية الإماراتية)</label>
           <input type="text" name="eid" placeholder="784-XXXX-XXXXXXX-X" inputmode="numeric" />
@@ -147,7 +151,6 @@
           <label>Passport Number (رقم الجواز)</label>
           <input type="text" name="passport" placeholder="P1234567" />
         </div>
-
         <div class="col-3">
           <label>Date of Birth (تاريخ الميلاد)</label>
           <input type="date" name="dob" required />
@@ -172,7 +175,6 @@
             <option>Abu Dhabi</option><option>Dubai</option><option>Sharjah</option><option>Ajman</option><option>Umm Al Quwain</option><option>Ras Al Khaimah</option><option>Fujairah</option>
           </select>
         </div>
-
         <div class="col-6">
           <label>Email Address (البريد الإلكتروني)</label>
           <input type="email" name="email" placeholder="name@example.com" />
@@ -181,7 +183,6 @@
           <label>Location / Area (المنطقة)</label>
           <input type="text" name="location" placeholder="e.g., Khalifa City A, Abu Dhabi" />
         </div>
-
         <div class="col-3">
           <label>Primary Mobile Number (رقم الجوال الأساسي)</label>
           <input type="text" name="mobilePrimary" placeholder="+9715XXXXXXXX" inputmode="tel" required />
@@ -199,7 +200,6 @@
           <input type="text" name="whatsapp" placeholder="+9715XXXXXXXX" inputmode="tel" />
           <div class="note">Used for WhatsApp notifications.</div>
         </div>
-
         <div class="col-6">
           <label>Emergency Contact Number (رقم الطوارئ)</label>
           <input type="text" name="emergency" placeholder="+9715XXXXXXXX" inputmode="tel" />
@@ -344,249 +344,27 @@
     </div>
   </div>
 
-  <!-- Bottom Action Bar -->
-  <div class="bottom-bar">
+  <!-- Bottom Bar -->
+  <div class="bottom-bar" role="region" aria-label="Save Appointment">
     <div class="bar-inner">
-      <button type="button" class="btn btn-primary" id="btnSave">Save Appointment</button>
-
-      <button type="button" class="btn btn-ghost" id="btnPrint">Print</button>
-
-      <button type="button" class="btn btn-ghost" id="btnWhatsApp">
-        Send Whatsapp <span class="tick" id="tickWA" style="display:none;">✅</span>
-      </button>
-
-      <button type="button" class="btn btn-ghost" id="btnEmail">
-        Send Email <span class="tick" id="tickEmail" style="display:none;">✅</span>
-      </button>
+      <button type="submit" class="btn btn-primary" form="patientForm">Save Appointment <span class="tick">✔</span></button>
+      <button type="button" class="btn btn-ghost">Cancel</button>
     </div>
   </div>
 
   <script>
-    /* ================================
-       Helpers and State
-    ==================================*/
-    const TICKS_KEY = 'appointment_ticks_status'; // { whatsapp: true/false, email: true/false }
+    // Modal show/hide
+    const form = document.getElementById('patientForm');
+    const backdrop = document.getElementById('successBackdrop');
+    const closeBtn = document.getElementById('modalClose');
+    const okBtn = document.getElementById('modalOk');
 
-    function getTicks(){
-      try{ return JSON.parse(localStorage.getItem(TICKS_KEY)) || {whatsapp:false,email:false}; }
-      catch(e){ return {whatsapp:false,email:false}; }
-    }
-    function setTicks(data){
-      localStorage.setItem(TICKS_KEY, JSON.stringify(data));
-    }
-    function renderTicks(){
-      const {whatsapp,email} = getTicks();
-      document.getElementById('tickWA').style.display = whatsapp ? 'inline' : 'none';
-      document.getElementById('tickEmail').style.display = email ? 'inline' : 'none';
-    }
-    renderTicks(); // restore on load
-
-    // Light guard example for SAVE
-    function validateBeforeSave(){
-      const f = document.getElementById('patientForm');
-      const name = (f.fullName.value || '').trim();
-      const dept = (f.department.value || '').trim();
-      if(!name || !dept){
-        alert('Please enter Patient Full Name and Department before saving.');
-        return false;
-      }
-      return true;
-    }
-
-    /* ================================
-       Premium Success Modal (glass)
-    ==================================*/
-    const successBackdrop = document.getElementById('successBackdrop');
-    document.getElementById('btnSave').addEventListener('click', () => {
-      if(!validateBeforeSave()) return;
-      successBackdrop.style.display = 'flex';
-      // Add API/DB save here later if needed
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      backdrop.style.display = 'flex';
     });
-    document.getElementById('modalClose').addEventListener('click', ()=> successBackdrop.style.display='none');
-    document.getElementById('modalOk').addEventListener('click',   ()=> successBackdrop.style.display='none');
-
-    /* ================================
-       PRINT → New Tab Preview with Slip
-    ==================================*/
-    function formatDT(v) {
-      if (!v) return '';
-      const d = new Date(v);
-      if (isNaN(d.getTime())) return v;
-      return d.toLocaleString('en-GB', {
-        weekday: 'short', day: '2-digit', month: 'short', year: 'numeric',
-        hour: 'numeric', minute: '2-digit', hour12: true
-      }).replace(',', '');
-    }
-
-    function buildAppointmentSlipHTML(formValues, ticks) {
-      const {
-        fullName, eid, department, doctor,
-        appt1, appt2, apptNew
-      } = formValues;
-
-      const firstDT  = formatDT(appt1);
-      const secondDT = formatDT(appt2);
-      const newDT    = formatDT(apptNew);
-      const upcoming = newDT || firstDT || secondDT || '—';
-
-      // QR to revitalrehab.ae (PNG via quick generator service)
-      const qrURL = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=0&data=' + encodeURIComponent('https://revitalrehab.ae');
-
-      const waBadge    = ticks.whatsapp ? 'Sent ✅' : 'Pending';
-      const emailBadge = ticks.email    ? 'Sent ✅' : 'Pending';
-
-      // Try to use absolute logo path when served; fallback to relative when file://
-      const base = (window.location.origin && window.location.origin !== 'null') ? window.location.origin + '/' : '';
-      const logoSrc = base ? (base + 'images/logo.jpg') : 'images/logo.jpg';
-
-      return `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<title>Appointment Slip - Revital Rehabilitation Hospital</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  @page { size: A4; margin: 18mm; }
-  body{ font-family: "Segoe UI", Roboto, Arial, sans-serif; color:#1d1f24; background:#fff; }
-  .wrap{ max-width: 780px; margin:0 auto; }
-  .header{ text-align:center; margin-bottom:18px; }
-  .logo{ height:60px; object-fit:contain; }
-  .hname{ font-size:20px; font-weight:800; margin-top:8px; }
-  .title{ font-size:18px; font-weight:800; margin:16px 0 12px; letter-spacing:.5px; }
-  .line{ border-top:1px solid #e6e7eb; margin:12px 0 18px; }
-  .grid{ display:flex; gap:18px; align-items:flex-start; }
-  .left{ flex:1; }
-  .right{ width:180px; text-align:center; }
-  .kv{ display:grid; grid-template-columns: 180px 1fr; row-gap:8px; column-gap:12px; }
-  .kv div{ padding:4px 0; font-size:14px; }
-  .k{ color:#667085; }
-  .v{ font-weight:600; }
-  .sectionTitle{ font-weight:800; margin:14px 0 8px; }
-  .badge{ display:inline-block; font-size:12px; padding:3px 8px; border-radius:999px; background:rgba(180,154,71,.12); color:#B49A47; font-weight:700; }
-  .qr{ border:1px solid #eee; padding:6px; border-radius:8px; margin-top:6px; }
-  .footer{ margin-top:20px; padding-top:12px; border-top:1px solid #e6e7eb; font-size:13px; color:#475467; text-align:center; line-height:1.5; }
-  .actions{ margin-top:20px; text-align:center; }
-  .printBtn{ padding:10px 16px; border:0; background:#B49A47; color:#fff; font-weight:800; border-radius:10px; cursor:pointer; }
-  @media print { .actions{ display:none } }
-</style>
-</head>
-<body>
-  <div class="wrap">
-    <div class="header">
-      <img class="logo" src="${logoSrc}" alt="Hospital Logo" />
-      <div class="hname">Revital Rehabilitation Hospital</div>
-      <div class="title">APPOINTMENT SLIP</div>
-    </div>
-
-    <div class="line"></div>
-
-    <div class="grid">
-      <div class="left">
-        <div class="sectionTitle">Patient Details <span class="badge">هوية المريض</span></div>
-        <div class="kv">
-          <div class="k">Patient Name</div>  <div class="v">${fullName || '—'}</div>
-          <div class="k">Emirates ID</div>   <div class="v">${eid || '—'}</div>
-        </div>
-
-        <div class="sectionTitle" style="margin-top:14px;">Appointment <span class="badge">الموعد</span></div>
-        <div class="kv">
-          <div class="k">Department</div>          <div class="v">${department || '—'}</div>
-          <div class="k">Doctor</div>              <div class="v">${doctor || '—'}</div>
-          <div class="k">Upcoming</div>            <div class="v">${upcoming}</div>
-          <div class="k">First Appointment</div>   <div class="v">${firstDT || '—'}</div>
-          <div class="k">Second Appointment</div>  <div class="v">${secondDT || '—'}</div>
-          <div class="k">Added (New)</div>         <div class="v">${newDT || '—'}</div>
-        </div>
-
-        <div class="sectionTitle" style="margin-top:14px;">Notifications <span class="badge">الإشعارات</span></div>
-        <div class="kv">
-          <div class="k">WhatsApp</div> <div class="v">${waBadge}</div>
-          <div class="k">Email</div>    <div class="v">${emailBadge}</div>
-        </div>
-      </div>
-
-      <div class="right">
-        <div class="sectionTitle">Scan for Website</div>
-        <img class="qr" src="${qrURL}" width="160" height="160" alt="QR to website" />
-        <div style="font-size:12px;color:#667085;margin-top:6px;">revitalrehab.ae</div>
-      </div>
-    </div>
-
-    <div class="footer">
-      info@revitalrehab.ae • +9 713 7144 444<br/>
-      Al Tawwash Street, Al Foah - Al Ain, Abudhabi
-    </div>
-
-    <div class="actions">
-      <button class="printBtn" onclick="window.print()">Print</button>
-    </div>
-  </div>
-</body>
-</html>`;
-    }
-
-    // PRINT handler → open new tab preview
-    document.getElementById('btnPrint').addEventListener('click', () => {
-      const f = document.getElementById('patientForm');
-      const get = (name) => (f.elements[name] ? f.elements[name].value : '');
-
-      const formValues = {
-        fullName: get('fullName'),
-        eid: get('eid'),
-        department: get('department'),
-        doctor: get('doctor'),
-        appt1: get('appt1'),
-        appt2: get('appt2'),
-        apptNew: get('apptNew')
-      };
-
-      let ticks = { whatsapp:false, email:false };
-      try {
-        ticks = JSON.parse(localStorage.getItem('appointment_ticks_status')) || ticks;
-      } catch(e){ /* ignore */ }
-
-      const html = buildAppointmentSlipHTML(formValues, ticks);
-      const w = window.open('', '_blank');
-      if (w) {
-        w.document.open();
-        w.document.write(html);
-        w.document.close();
-        w.focus();
-      } else {
-        alert('Popup blocked. Please allow popups for this site to preview the slip.');
-      }
-    });
-
-    /* ================================
-       SEND WhatsApp / Email → persist ticks
-    ==================================*/
-    document.getElementById('btnWhatsApp').addEventListener('click', () => {
-      const ticks = getTicks();
-      ticks.whatsapp = true;
-      setTicks(ticks);
-      renderTicks();
-
-      // TODO: integrate WhatsApp API call here
-      // Example:
-      // fetch('/api/whatsapp/send', {
-      //   method:'POST', headers:{'Content-Type':'application/json'},
-      //   body: JSON.stringify({ to: document.querySelector('[name="whatsapp"]').value, ...payload })
-      // })
-    });
-
-    document.getElementById('btnEmail').addEventListener('click', () => {
-      const ticks = getTicks();
-      ticks.email = true;
-      setTicks(ticks);
-      renderTicks();
-
-      // TODO: integrate Email API call here
-      // Example:
-      // fetch('/api/email/send', {
-      //   method:'POST', headers:{'Content-Type':'application/json'},
-      //   body: JSON.stringify({ to: document.querySelector('[name="email"]').value, ...payload })
-      // })
-    });
+    closeBtn.addEventListener('click', ()=>backdrop.style.display='none');
+    okBtn.addEventListener('click', ()=>backdrop.style.display='none');
   </script>
 </body>
 </html>
