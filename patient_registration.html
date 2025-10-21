@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
-      --brand:#B49A47;       /* Gold accent from your logo */
+      --brand:#B49A47; /* Gold accent */
       --ink:#1d1f24;
       --muted:#667085;
       --line:#e6e7eb;
@@ -18,7 +18,7 @@
     html,body{height:100%}
     body{
       margin:0;
-      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      font-family:"Segoe UI", Roboto, Arial, sans-serif;
       color:var(--ink);
       background:var(--bg);
       -webkit-font-smoothing: antialiased;
@@ -33,19 +33,15 @@
       padding:16px 20px;
       display:flex; align-items:center; gap:12px;
     }
-    .title{font-size:20px; font-weight:700; letter-spacing:.2px}
+    .title{font-size:20px;font-weight:700;letter-spacing:.2px}
     .subtitle{color:var(--muted); font-size:13px}
     .spacer{flex:1}
-    .logo{height:36px; width:auto; object-fit:contain}
+    .logo{height:36px;width:auto;object-fit:contain}
 
-    /* Page container */
-    .container{
-      max-width:1100px;
-      margin:24px auto 0;
-      padding:0 16px 140px; /* 👈 added extra bottom padding to avoid overlap */
-    }
+    /* Container */
+    .container{max-width:1100px;margin:24px auto 140px;padding:0 16px}
 
-    /* Section block: full-width with divider top */
+    /* Section */
     .section{padding:20px 0;border-top:1px solid var(--line)}
     .section:first-of-type{border-top:0}
     .section h2{margin:0 0 14px 0;font-size:16px;font-weight:700}
@@ -54,7 +50,7 @@
     /* Grid */
     .grid{display:grid;gap:14px;grid-template-columns:repeat(12,1fr)}
     .col-12{grid-column:span 12}.col-8{grid-column:span 8}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}
-    @media (max-width: 960px){.col-8,.col-6,.col-4,.col-3{grid-column:span 12}}
+    @media (max-width:960px){.col-8,.col-6,.col-4,.col-3{grid-column:span 12}}
 
     label{display:block;margin:0 0 6px 0;font-weight:600;font-size:13px}
     input[type="text"],input[type="email"],input[type="number"],input[type="date"],input[type="datetime-local"],select,textarea{
@@ -66,32 +62,31 @@
     .note{font-size:12px;color:var(--muted)}
     .inline{display:flex;gap:8px;align-items:center}
 
-    /* Bottom button bar (Layout B) */
+    /* Bottom bar (glass + buttons) */
     .bottom-bar{
       position:fixed; left:0; right:0; bottom:0; z-index:20;
-      background: rgba(255,255,255,0.85); /* 👈 semi-transparent */
+      background:rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
       border-top:1px solid var(--line);
-      backdrop-filter: blur(8px); /* 👈 glass blur effect */
     }
     .bar-inner{
       max-width:1100px; margin:0 auto; padding:12px 16px;
-      display:flex; align-items:center; gap:10px;
+      display:flex; flex-wrap:wrap; align-items:center; gap:10px;
     }
     .btn{
-      border:none; border-radius:10px; padding:14px 16px; font-weight:700; cursor:pointer; font-size:14px;
+      border:none; border-radius:10px; padding:12px 16px; font-weight:700; cursor:pointer; font-size:14px;
     }
     .btn-primary{
-      flex:1;
-      background:var(--brand); color:#fff; text-transform:uppercase; letter-spacing:.4px;
+      background:var(--brand); color:#fff; flex:1; text-transform:uppercase; letter-spacing:.4px;
     }
     .btn-primary:hover{opacity:.95}
     .btn-ghost{
-      background:#fff; color:var(--ink); border:1px solid var(--line); min-width:140px;
+      background:#fff; color:var(--ink); border:1px solid var(--line); min-width:120px;
     }
     .btn-ghost:hover{border-color:#d6d7dc}
-    .tick{ margin-left:8px; color:var(--success); font-weight:900; }
+    .tick{ margin-left:6px; color:var(--success); font-weight:900; }
 
-    /* Premium Modal (glass + gold accent) */
+    /* Modal */
     .modal-backdrop{
       position:fixed; inset:0; background:rgba(0,0,0,.28);
       display:none; align-items:center; justify-content:center; z-index:50;
@@ -105,20 +100,13 @@
       box-shadow:0 20px 60px rgba(0,0,0,.25);
       overflow:hidden;
     }
-    .modal-header{
-      display:flex; align-items:center; gap:10px;
-      padding:18px 20px; border-bottom:1px solid rgba(180,154,71,.25);
-      background:linear-gradient(180deg, rgba(180,154,71,.10), rgba(255,255,255,0));
-    }
-    .modal-icon{
-      width:36px; height:36px; border-radius:10px; display:grid; place-items:center;
-      background:rgba(180,154,71,.14); color:var(--brand); font-size:20px; font-weight:900;
-    }
-    .modal-title{font-size:16px; font-weight:800}
-    .modal-body{padding:16px 20px; color:#2a2f34}
-    .modal-actions{padding:14px 20px; display:flex; justify-content:flex-end; gap:10px; border-top:1px solid rgba(180,154,71,.18)}
-    .btn-modal{padding:10px 14px; border-radius:10px; border:1px solid var(--line); background:#fff; cursor:pointer; font-weight:700}
-    .btn-ok{background:var(--brand); color:#fff; border:none}
+    .modal-header{display:flex; align-items:center; gap:10px; padding:18px 20px; border-bottom:1px solid rgba(180,154,71,.25); background:linear-gradient(180deg, rgba(180,154,71,.10), rgba(255,255,255,0));}
+    .modal-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(180,154,71,.14);color:var(--brand);font-size:20px;font-weight:900;}
+    .modal-title{font-size:16px;font-weight:800}
+    .modal-body{padding:16px 20px;color:#2a2f34}
+    .modal-actions{padding:14px 20px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid rgba(180,154,71,.18)}
+    .btn-modal{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:700}
+    .btn-ok{background:var(--brand);color:#fff;border:none}
   </style>
 </head>
 <body>
@@ -130,10 +118,10 @@
       <div class="subtitle">Patient Communication Portal</div>
     </div>
     <div class="spacer"></div>
-    <!-- Small logo top-right -->
     <img class="logo" src="images/logo.jpg" alt="Hospital Logo">
   </header>
 
+  <!-- Form -->
   <form class="container" id="patientForm" autocomplete="off">
     <!-- SECTION 1: Patient Information -->
     <section class="section" aria-labelledby="sec-patient">
@@ -165,14 +153,19 @@
           <label>Nationality (الجنسية)</label>
           <select name="nationality" required>
             <option value="">Select…</option>
-            <option>United Arab Emirates</option><option>India</option><option>Pakistan</option><option>Egypt</option><option>Philippines</option><option>Bangladesh</option><option>Nepal</option><option>Sri Lanka</option><option>Jordan</option><option>Sudan</option>
+            <option>United Arab Emirates</option><option>India</option><option>Pakistan</option>
+            <option>Egypt</option><option>Philippines</option><option>Bangladesh</option>
+            <option>Nepal</option><option>Sri Lanka</option><option>Jordan</option>
+            <option>Sudan</option>
           </select>
         </div>
         <div class="col-3">
           <label>Emirate (الإمارة)</label>
           <select name="emirate" required>
             <option value="">Select…</option>
-            <option>Abu Dhabi</option><option>Dubai</option><option>Sharjah</option><option>Ajman</option><option>Umm Al Quwain</option><option>Ras Al Khaimah</option><option>Fujairah</option>
+            <option>Abu Dhabi</option><option>Dubai</option><option>Sharjah</option>
+            <option>Ajman</option><option>Umm Al Quwain</option><option>Ras Al Khaimah</option>
+            <option>Fujairah</option>
           </select>
         </div>
         <div class="col-6">
@@ -222,19 +215,17 @@
           <label>Department (القسم)</label>
           <select name="department" required>
             <option value="">Select…</option>
-            <option>Physiotherapy</option><option>ENT</option><option>Gynecology</option><option>Orthopedics</option><option>Neurology</option><option>General Surgery</option>
+            <option>Physiotherapy</option><option>ENT</option><option>Gynecology</option>
+            <option>Orthopedics</option><option>Neurology</option><option>General Surgery</option>
           </select>
         </div>
         <div class="col-4">
           <label>Doctor (الطبيب)</label>
           <select name="doctor" required>
             <option value="">Select…</option>
-            <option>Dr. Abrar Muhamed</option>
-            <option>Dr. Idrees Adam</option>
-            <option>Dr. Amira Elshamsi</option>
-            <option>Dr. George Philips</option>
-            <option>Dr. Sara Nabil</option>
-            <option>Dr. Ahmed Al Marri</option>
+            <option>Dr. Abrar Muhamed</option><option>Dr. Idrees Adam</option>
+            <option>Dr. Amira Elshamsi</option><option>Dr. George Philips</option>
+            <option>Dr. Sara Nabil</option><option>Dr. Ahmed Al Marri</option>
           </select>
         </div>
         <div class="col-4">
@@ -264,107 +255,4 @@
           <input type="datetime-local" name="appt1" />
         </div>
         <div class="col-4">
-          <label>Second Appointment — Date & Time (الموعد الثاني)</label>
-          <input type="datetime-local" name="appt2" />
-        </div>
-        <div class="col-4">
-          <label>Add New Appointment (إضافة موعد جديد)</label>
-          <input type="datetime-local" name="apptNew" />
-        </div>
-
-        <div class="col-4">
-          <label>Assign Department (تعيين القسم)</label>
-          <select name="apptDepartment">
-            <option value="">Select…</option>
-            <option>Physiotherapy</option><option>ENT</option><option>Gynecology</option><option>Orthopedics</option><option>Neurology</option><option>General Surgery</option>
-          </select>
-        </div>
-        <div class="col-4">
-          <label>Assign Doctor (تعيين الطبيب)</label>
-          <select name="apptDoctor">
-            <option value="">Select…</option>
-            <option>Dr. Abrar Muhamed</option>
-            <option>Dr. Idrees Adam</option>
-            <option>Dr. Amira Elshamsi</option>
-            <option>Dr. George Philips</option>
-            <option>Dr. Sara Nabil</option>
-            <option>Dr. Ahmed Al Marri</option>
-          </select>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 4: Attendance / Absence -->
-    <section class="section" aria-labelledby="sec-absence">
-      <h2 id="sec-absence">Attendance / Absence <span class="badge">الحضور / الغياب</span></h2>
-      <div class="grid">
-        <div class="col-12">
-          <label class="inline">
-            <input type="checkbox" name="absent" />
-            <span>&nbsp;Mark as Absent (وضع علامة غياب)</span>
-          </label>
-        </div>
-        <div class="col-12">
-          <label>Reason for Absence (سبب الغياب)</label>
-          <textarea name="absenceReason" placeholder="Enter reason if the patient missed the scheduled appointment"></textarea>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 5: Staff Entry Details -->
-    <section class="section" aria-labelledby="sec-staff">
-      <h2 id="sec-staff">Staff Entry Details <span class="badge">بيانات الموظف</span></h2>
-      <div class="grid">
-        <div class="col-6">
-          <label>Staff Name (اسم الموظف)</label>
-          <input type="text" name="staffName" placeholder="Enter staff name" required />
-        </div>
-        <div class="col-6">
-          <label>Staff Mobile Number (رقم جوال الموظف)</label>
-          <input type="text" name="staffMobile" placeholder="+9715XXXXXXXX" inputmode="tel" required />
-        </div>
-      </div>
-    </section>
-  </form>
-
-  <!-- Premium Success Modal -->
-  <div class="modal-backdrop" id="successBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-icon">✅</div>
-        <div class="modal-title" id="modalTitle">Appointment Saved Successfully</div>
-      </div>
-      <div class="modal-body" id="modalBody">
-        The patient appointment has been saved. You can now print or send notifications via WhatsApp/Email.
-      </div>
-      <div class="modal-actions">
-        <button class="btn-modal" id="modalClose">Close</button>
-        <button class="btn-modal btn-ok" id="modalOk">OK</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom Bar -->
-  <div class="bottom-bar" role="region" aria-label="Save Appointment">
-    <div class="bar-inner">
-      <button type="submit" class="btn btn-primary" form="patientForm">Save Appointment <span class="tick">✔</span></button>
-      <button type="button" class="btn btn-ghost">Cancel</button>
-    </div>
-  </div>
-
-  <script>
-    // Modal show/hide
-    const form = document.getElementById('patientForm');
-    const backdrop = document.getElementById('successBackdrop');
-    const closeBtn = document.getElementById('modalClose');
-    const okBtn = document.getElementById('modalOk');
-
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      backdrop.style.display = 'flex';
-    });
-    closeBtn.addEventListener('click', ()=>backdrop.style.display='none');
-    okBtn.addEventListener('click', ()=>backdrop.style.display='none');
-  </script>
-</body>
-</html>
+          <label>Second Appointment — Date & Time
