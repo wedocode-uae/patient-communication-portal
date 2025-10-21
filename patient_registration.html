@@ -1,384 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Patient Registration & Appointments</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root{
-      --brand:#B49A47; /* Gold accent */
-      --ink:#1d1f24;
-      --muted:#667085;
-      --line:#e6e7eb;
-      --bg:#f7f8fa;
-      --success:#19a463;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:"Segoe UI", Roboto, Arial, sans-serif;
-      color:var(--ink);
-      background:var(--bg);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Header */
-    .header{
-      position:sticky; top:0; z-index:10;
-      background:#fff;
-      border-bottom:1px solid var(--line);
-      padding:16px 20px;
-      display:flex; align-items:center; gap:12px;
-    }
-    .title{font-size:20px;font-weight:700;letter-spacing:.2px}
-    .subtitle{color:var(--muted); font-size:13px}
-    .spacer{flex:1}
-    .logo{height:36px;width:auto;object-fit:contain}
-
-    /* Container */
-    .container{max-width:1100px;margin:24px auto 140px;padding:0 16px}
-
-    /* Section */
-    .section{padding:20px 0;border-top:1px solid var(--line)}
-    .section:first-of-type{border-top:0}
-    .section h2{margin:0 0 14px 0;font-size:16px;font-weight:700}
-    .badge{display:inline-block;background:rgba(180,154,71,.12);color:var(--brand);padding:4px 8px;border-radius:999px;font-size:12px;font-weight:600;vertical-align:middle}
-
-    /* Grid */
-    .grid{display:grid;gap:14px;grid-template-columns:repeat(12,1fr)}
-    .col-12{grid-column:span 12}.col-8{grid-column:span 8}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}
-    @media (max-width:960px){.col-8,.col-6,.col-4,.col-3{grid-column:span 12}}
-
-    label{display:block;margin:0 0 6px 0;font-weight:600;font-size:13px}
-    input[type="text"],input[type="email"],input[type="number"],input[type="date"],input[type="datetime-local"],select,textarea{
-      width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s
-    }
-    input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(180,154,71,.14)}
-    textarea{min-height:96px;resize:vertical}
-    .file{border:1px dashed var(--line);padding:14px;border-radius:10px;background:#fff}
-    .note{font-size:12px;color:var(--muted)}
-    .inline{display:flex;gap:8px;align-items:center}
-
-    /* Bottom bar (glass + buttons) */
-    .bottom-bar{
-      position:fixed; left:0; right:0; bottom:0; z-index:20;
-      background:rgba(255,255,255,0.85);
-      backdrop-filter: blur(8px);
-      border-top:1px solid var(--line);
-    }
-    .bar-inner{
-      max-width:1100px; margin:0 auto; padding:12px 16px;
-      display:flex; flex-wrap:wrap; align-items:center; gap:10px;
-    }
-    .btn{
-      border:none; border-radius:10px; padding:12px 16px; font-weight:700; cursor:pointer; font-size:14px;
-    }
-    .btn-primary{
-      background:var(--brand); color:#fff; flex:1; text-transform:uppercase; letter-spacing:.4px;
-    }
-    .btn-primary:hover{opacity:.95}
-    .btn-ghost{
-      background:#fff; color:var(--ink); border:1px solid var(--line); min-width:120px;
-    }
-    .btn-ghost:hover{border-color:#d6d7dc}
-    .tick{ margin-left:6px; color:var(--success); font-weight:900; }
-
-    /* Modal */
-    .modal-backdrop{
-      position:fixed; inset:0; background:rgba(0,0,0,.28);
-      display:none; align-items:center; justify-content:center; z-index:50;
-    }
-    .modal{
-      width:min(560px, calc(100% - 32px));
-      background:rgba(255,255,255,.78);
-      border:1px solid rgba(180,154,71,.35);
-      border-radius:16px;
-      backdrop-filter: blur(10px);
-      box-shadow:0 20px 60px rgba(0,0,0,.25);
-      overflow:hidden;
-    }
-    .modal-header{display:flex; align-items:center; gap:10px; padding:18px 20px; border-bottom:1px solid rgba(180,154,71,.25); background:linear-gradient(180deg, rgba(180,154,71,.10), rgba(255,255,255,0));}
-    .modal-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(180,154,71,.14);color:var(--brand);font-size:20px;font-weight:900;}
-    .modal-title{font-size:16px;font-weight:800}
-    .modal-body{padding:16px 20px;color:#2a2f34}
-    .modal-actions{padding:14px 20px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid rgba(180,154,71,.18)}
-    .btn-modal{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:700}
-    .btn-ok{background:var(--brand);color:#fff;border:none}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Registration & Appointments</title>
+<style>
+:root{
+  --brand:#B49A47;
+  --ink:#1d1f24;
+  --muted:#667085;
+  --line:#e6e7eb;
+  --bg:#f7f8fa;
+  --success:#19a463;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);}
+header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:16px;display:flex;align-items:center;}
+header .title{font-weight:700;font-size:20px;}
+header .spacer{flex:1;}
+header .logo{height:36px;}
+.container{max-width:1100px;margin:24px auto 140px;padding:0 16px;}
+.section{padding:20px 0;border-top:1px solid var(--line);}
+.section:first-of-type{border-top:0;}
+.section h2{margin:0 0 14px;font-size:16px;font-weight:700;}
+.badge{display:inline-block;background:rgba(180,154,71,.12);color:var(--brand);padding:4px 8px;border-radius:999px;font-size:12px;font-weight:600;vertical-align:middle;}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(12,1fr);}
+.col-12{grid-column:span 12}.col-8{grid-column:span 8}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3;}
+@media(max-width:960px){.col-8,.col-6,.col-4,.col-3{grid-column:span 12;}}
+label{display:block;margin:0 0 6px;font-weight:600;font-size:13px;}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:14px;}
+input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(180,154,71,.14);}
+textarea{min-height:96px;resize:vertical;}
+.file{border:1px dashed var(--line);padding:14px;border-radius:10px;background:#fff;}
+.note{font-size:12px;color:var(--muted);}
+.inline{display:flex;gap:8px;align-items:center;}
+/* Bottom bar */
+.bottom-bar{
+  position:fixed; left:0; right:0; bottom:0;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);border-top:1px solid var(--line);
+}
+.bar-inner{
+  max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+}
+.btn{border:none;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer;font-size:14px;}
+.btn-primary{background:var(--brand);color:#fff;flex:1;text-transform:uppercase;letter-spacing:.4px;}
+.btn-primary:hover{opacity:.95;}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line);min-width:120px;}
+.btn-ghost:hover{border-color:#d6d7dc;}
+.tick{margin-left:6px;color:var(--success);font-weight:900;}
+</style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="header" role="banner">
-    <div>
-      <div class="title">Patient Registration & Appointment Management</div>
-      <div class="subtitle">Patient Communication Portal</div>
+<header>
+  <div class="title">Patient Registration & Appointment Management</div>
+  <div class="spacer"></div>
+  <img src="images/logo.jpg" alt="Logo" class="logo">
+</header>
+
+<form class="container" id="patientForm" autocomplete="off">
+  <section class="section">
+    <h2>Patient Information <span class="badge">هوية المريض</span></h2>
+    <div class="grid">
+      <div class="col-4"><label>Full Name</label><input type="text" name="fullName" required></div>
+      <div class="col-4"><label>Emirates ID</label><input type="text" name="eid"></div>
+      <div class="col-4"><label>Passport</label><input type="text" name="passport"></div>
+      <div class="col-3"><label>DOB</label><input type="date" name="dob" required></div>
+      <div class="col-3"><label>Gender</label><select name="gender"><option>Male</option><option>Female</option></select></div>
+      <div class="col-3"><label>Nationality</label><input type="text" name="nationality"></div>
+      <div class="col-3"><label>Email</label><input type="email" name="email"></div>
+      <div class="col-6"><label>Mobile</label><input type="text" name="mobilePrimary" required></div>
+      <div class="col-6"><label>WhatsApp</label><input type="text" name="whatsapp"></div>
     </div>
-    <div class="spacer"></div>
-    <img class="logo" src="images/logo.jpg" alt="Hospital Logo">
-  </header>
+  </section>
+</form>
 
-  <!-- Form -->
-  <form class="container" id="patientForm" autocomplete="off">
-    <!-- SECTION 1: Patient Information -->
-    <section class="section" aria-labelledby="sec-patient">
-      <h2 id="sec-patient">Patient Information <span class="badge">هوية المريض</span></h2>
-      <div class="grid">
-        <div class="col-4">
-          <label>Patient Full Name (اسم المريض)</label>
-          <input type="text" name="fullName" placeholder="As per EID/Passport" required />
-        </div>
-        <div class="col-4">
-          <label>Emirates ID (الهوية الإماراتية)</label>
-          <input type="text" name="eid" placeholder="784-XXXX-XXXXXXX-X" inputmode="numeric" />
-        </div>
-        <div class="col-4">
-          <label>Passport Number (رقم الجواز)</label>
-          <input type="text" name="passport" placeholder="P1234567" />
-        </div>
-        <div class="col-3">
-          <label>Date of Birth (تاريخ الميلاد)</label>
-          <input type="date" name="dob" required />
-        </div>
-        <div class="col-3">
-          <label>Gender (الجنس)</label>
-          <select name="gender" required>
-            <option value="">Select…</option><option>Male</option><option>Female</option>
-          </select>
-        </div>
-        <div class="col-3">
-          <label>Nationality (الجنسية)</label>
-          <select name="nationality" required>
-            <option value="">Select…</option>
-            <option>United Arab Emirates</option><option>India</option><option>Pakistan</option>
-            <option>Egypt</option><option>Philippines</option><option>Bangladesh</option>
-            <option>Nepal</option><option>Sri Lanka</option><option>Jordan</option>
-            <option>Sudan</option>
-          </select>
-        </div>
-        <div class="col-3">
-          <label>Emirate (الإمارة)</label>
-          <select name="emirate" required>
-            <option value="">Select…</option>
-            <option>Abu Dhabi</option><option>Dubai</option><option>Sharjah</option>
-            <option>Ajman</option><option>Umm Al Quwain</option><option>Ras Al Khaimah</option>
-            <option>Fujairah</option>
-          </select>
-        </div>
-        <div class="col-6">
-          <label>Email Address (البريد الإلكتروني)</label>
-          <input type="email" name="email" placeholder="name@example.com" />
-        </div>
-        <div class="col-6">
-          <label>Location / Area (المنطقة)</label>
-          <input type="text" name="location" placeholder="e.g., Khalifa City A, Abu Dhabi" />
-        </div>
-        <div class="col-3">
-          <label>Primary Mobile Number (رقم الجوال الأساسي)</label>
-          <input type="text" name="mobilePrimary" placeholder="+9715XXXXXXXX" inputmode="tel" required />
-        </div>
-        <div class="col-3">
-          <label>Secondary Mobile Number (رقم الجوال البديل)</label>
-          <input type="text" name="mobileSecondary" placeholder="+9715XXXXXXXX" inputmode="tel" />
-        </div>
-        <div class="col-3">
-          <label>Preferred Contact (رقم التواصل المفضل)</label>
-          <select name="preferredContact"><option>Primary</option><option>Secondary</option></select>
-        </div>
-        <div class="col-3">
-          <label>Preferred WhatsApp Number (رقم واتساب المفضل)</label>
-          <input type="text" name="whatsapp" placeholder="+9715XXXXXXXX" inputmode="tel" />
-          <div class="note">Used for WhatsApp notifications.</div>
-        </div>
-        <div class="col-6">
-          <label>Emergency Contact Number (رقم الطوارئ)</label>
-          <input type="text" name="emergency" placeholder="+9715XXXXXXXX" inputmode="tel" />
-        </div>
-        <div class="col-6">
-          <label>Patient Photo (صورة المريض)</label>
-          <div class="file">
-            <input type="file" name="photo" accept="image/*" />
-            <div class="note">Upload clear face photo (JPG/PNG). (Not printed on slip)</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 2: Medical Visit Details -->
-    <section class="section" aria-labelledby="sec-visit">
-      <h2 id="sec-visit">Medical Visit Details <span class="badge">تفاصيل الزيارة</span></h2>
-      <div class="grid">
-        <div class="col-4">
-          <label>Department (القسم)</label>
-          <select name="department" required>
-            <option value="">Select…</option>
-            <option>Physiotherapy</option><option>ENT</option><option>Gynecology</option>
-            <option>Orthopedics</option><option>Neurology</option><option>General Surgery</option>
-          </select>
-        </div>
-        <div class="col-4">
-          <label>Doctor (الطبيب)</label>
-          <select name="doctor" required>
-            <option value="">Select…</option>
-            <option>Dr. Abrar Muhamed</option><option>Dr. Idrees Adam</option>
-            <option>Dr. Amira Elshamsi</option><option>Dr. George Philips</option>
-            <option>Dr. Sara Nabil</option><option>Dr. Ahmed Al Marri</option>
-          </select>
-        </div>
-        <div class="col-4">
-          <label>Visit Reason (سبب الزيارة)</label>
-          <select name="visitReason" required>
-            <option value="">Select…</option>
-            <option>Musculoskeletal pain</option>
-            <option>Post-operative rehabilitation</option>
-            <option>Respiratory assessment</option>
-            <option>Neurological evaluation</option>
-            <option>ENT assessment</option>
-            <option>Antenatal care (OB/GYN)</option>
-            <option>Chronic disease follow-up</option>
-            <option>Injury/trauma assessment</option>
-            <option>Pre-surgical evaluation</option>
-          </select>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 3: Appointments -->
-    <section class="section" aria-labelledby="sec-appts">
-      <h2 id="sec-appts">Appointments <span class="badge">المواعيد</span></h2>
-      <div class="grid">
-        <div class="col-4">
-          <label>First Appointment — Date & Time (الموعد الأول)</label>
-          <input type="datetime-local" name="appt1" />
-        </div>
-        <div class="col-4">
-          <label>Second Appointment — Date & Time (الموعد الثاني)</label>
-          <input type="datetime-local" name="appt2" />
-        </div>
-        <div class="col-4">
-          <label>Add New Appointment (إضافة موعد جديد)</label>
-          <input type="datetime-local" name="apptNew" />
-        </div>
-        <div class="col-4">
-          <label>Assign Department (تعيين القسم)</label>
-          <select name="apptDepartment">
-            <option value="">Select…</option>
-            <option>Physiotherapy</option><option>ENT</option><option>Gynecology</option>
-            <option>Orthopedics</option><option>Neurology</option><option>General Surgery</option>
-          </select>
-        </div>
-        <div class="col-4">
-          <label>Assign Doctor (تعيين الطبيب)</label>
-          <select name="apptDoctor">
-            <option value="">Select…</option>
-            <option>Dr. Abrar Muhamed</option><option>Dr. Idrees Adam</option>
-            <option>Dr. Amira Elshamsi</option><option>Dr. George Philips</option>
-            <option>Dr. Sara Nabil</option><option>Dr. Ahmed Al Marri</option>
-          </select>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 4: Attendance / Absence -->
-    <section class="section" aria-labelledby="sec-absence">
-      <h2 id="sec-absence">Attendance / Absence <span class="badge">الحضور / الغياب</span></h2>
-      <div class="grid">
-        <div class="col-12">
-          <label class="inline">
-            <input type="checkbox" name="absent" />
-            <span>&nbsp;Mark as Absent (وضع علامة غياب)</span>
-          </label>
-        </div>
-        <div class="col-12">
-          <label>Reason for Absence (سبب الغياب)</label>
-          <textarea name="absenceReason" placeholder="Enter reason if the patient missed the scheduled appointment"></textarea>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 5: Staff Entry Details -->
-    <section class="section" aria-labelledby="sec-staff">
-      <h2 id="sec-staff">Staff Entry Details <span class="badge">بيانات الموظف</span></h2>
-      <div class="grid">
-        <div class="col-6">
-          <label>Staff Name (اسم الموظف)</label>
-          <input type="text" name="staffName" placeholder="Enter staff name" required />
-        </div>
-        <div class="col-6">
-          <label>Staff Mobile Number (رقم جوال الموظف)</label>
-          <input type="text" name="staffMobile" placeholder="+9715XXXXXXXX" inputmode="tel" required />
-        </div>
-      </div>
-    </section>
-  </form>
-
-  <!-- Modal -->
-  <div class="modal-backdrop" id="successBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-icon">✅</div>
-        <div class="modal-title" id="modalTitle">Appointment Saved Successfully</div>
-      </div>
-      <div class="modal-body" id="modalBody">
-        The patient appointment has been saved. You can now print or send notifications via WhatsApp/Email.
-      </div>
-      <div class="modal-actions">
-        <button class="btn-modal" id="modalClose">Close</button>
-        <button class="btn-modal btn-ok" id="modalOk">OK</button>
-      </div>
-    </div>
+<!-- Bottom Bar with all buttons -->
+<div class="bottom-bar">
+  <div class="bar-inner">
+    <button type="submit" class="btn btn-primary" form="patientForm">Save Appointment <span class="tick">✔</span></button>
+    <button type="button" class="btn btn-ghost" onclick="sendWhatsApp()">WhatsApp</button>
+    <button type="button" class="btn btn-ghost" onclick="sendEmail()">Send Email</button>
+    <button type="button" class="btn btn-ghost" onclick="printForm()">Print</button>
+    <button type="button" class="btn btn-ghost" onclick="resetForm()">Cancel</button>
   </div>
+</div>
 
-  <!-- Bottom Bar -->
-  <div class="bottom-bar" role="region" aria-label="Form Actions">
-    <div class="bar-inner">
-      <button type="submit" class="btn btn-primary" form="patientForm">
-        Save Appointment <span class="tick">✔</span>
-      </button>
-      <button type="button" class="btn btn-ghost" onclick="sendWhatsApp()">WhatsApp</button>
-      <button type="button" class="btn btn-ghost" onclick="sendEmail()">Send Email</button>
-      <button type="button" class="btn btn-ghost" onclick="printForm()">Print</button>
-      <button type="button" class="btn btn-ghost" onclick="resetForm()">Cancel</button>
-    </div>
-  </div>
+<script>
+const form=document.getElementById('patientForm');
+form.addEventListener('submit', e=>{e.preventDefault();alert('Appointment saved!');});
 
-  <script>
-    const form = document.getElementById('patientForm');
-    const modal = document.getElementById('successBackdrop');
-    const closeModal = document.getElementById('modalClose');
-    const okModal = document.getElementById('modalOk');
+function sendWhatsApp(){
+  const name=form.fullName.value||"Patient";
+  alert(`WhatsApp message would be sent to ${name}`);
+}
+function sendEmail(){
+  const email=form.email.value||"";
+  if(!email){alert("Email not provided.");return;}
+  alert(`Email would be sent to ${email}`);
+}
+function printForm(){window.print();}
+function resetForm(){if(confirm("Reset the form?")){form.reset();}}
+</script>
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      modal.style.display = 'flex';
-    });
-
-    closeModal.addEventListener('click', () => modal.style.display='none');
-    okModal.addEventListener('click', () => modal.style.display='none');
-
-    function sendWhatsApp(){
-      const name = form.fullName.value || "Patient";
-      alert(`WhatsApp message would be sent to ${name}`);
-    }
-
-    function sendEmail(){
-      const email = form.email.value || "";
-      if(!email){ alert("Email not provided."); return; }
-      alert(`Email would be sent to ${email}`);
-    }
-
-    function printForm(){
-      window.print();
-    }
-
-    function resetForm(){
-      if(confirm("Are you sure you want to cancel and reset the form?")){
-        form.reset();
-      }
-    }
-  </script>
 </body>
 </html>
