@@ -13,13 +13,17 @@
   --bg:#f7f8fa;
   --success:#19a463;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;}
 body{margin:0;font-family:"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);}
-header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:16px;display:flex;align-items:center;}
+header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:16px;display:flex;align-items:center;z-index:10;}
 header .title{font-weight:700;font-size:20px;}
 header .spacer{flex:1;}
 header .logo{height:36px;}
-.container{max-width:1100px;margin:24px auto 140px;padding:0 16px;}
+.container{
+  max-width:1100px;
+  margin:24px auto 0;
+  padding:0 16px 160px; /* extra bottom padding to avoid overlap with bottom bar */
+}
 .section{padding:20px 0;border-top:1px solid var(--line);}
 .section:first-of-type{border-top:0;}
 .section h2{margin:0 0 14px;font-size:16px;font-weight:700;}
@@ -36,7 +40,11 @@ textarea{min-height:96px;resize:vertical;}
 .inline{display:flex;gap:8px;align-items:center;}
 /* Bottom bar */
 .bottom-bar{
-  position:fixed; left:0; right:0; bottom:0;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);border-top:1px solid var(--line);
+  position:fixed; left:0; right:0; bottom:0;
+  background:rgba(255,255,255,0.9); /* transparent */
+  backdrop-filter:blur(8px);
+  border-top:1px solid var(--line);
+  z-index:50;
 }
 .bar-inner{
   max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;
@@ -58,6 +66,7 @@ textarea{min-height:96px;resize:vertical;}
 </header>
 
 <form class="container" id="patientForm" autocomplete="off">
+  <!-- Patient Info -->
   <section class="section">
     <h2>Patient Information <span class="badge">هوية المريض</span></h2>
     <div class="grid">
@@ -72,9 +81,18 @@ textarea{min-height:96px;resize:vertical;}
       <div class="col-6"><label>WhatsApp</label><input type="text" name="whatsapp"></div>
     </div>
   </section>
+
+  <!-- Staff Entry Details -->
+  <section class="section">
+    <h2>Staff Entry Details <span class="badge">بيانات الموظف</span></h2>
+    <div class="grid">
+      <div class="col-6"><label>Staff Name</label><input type="text" name="staffName" required></div>
+      <div class="col-6"><label>Staff Mobile Number</label><input type="text" name="staffMobile" required></div>
+    </div>
+  </section>
 </form>
 
-<!-- Bottom Bar with all buttons -->
+<!-- Bottom Bar -->
 <div class="bottom-bar">
   <div class="bar-inner">
     <button type="submit" class="btn btn-primary" form="patientForm">Save Appointment <span class="tick">✔</span></button>
